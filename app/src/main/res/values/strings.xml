@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">DiceRoller</string>
+
+    <!-- Buttons -->
+    <string name="roll_button">Roll Dice</string>
+    <string name="reset_button">Reset</string>
+    <string name="clear_button">Clear</string>
+    <string name="reroll_button">Re-roll</string>
+    <string name="delete_button">Delete</string>
+
+
+    <!-- Labels / Inputs -->
+    <string name="number_of_dice">Number of dice</string>
+    <string name="number_of_rolls">Number of rolls</string>
+
+    <!-- Results / Histogram -->
+    <string name="results_title">Results</string>
+    <string name="histogram_title">Results histogram</string>
+    <string name="x_axis_label">Result value</string>
+    <string name="y_axis_label">Frequency</string>
+
+    <!-- Status / Info -->
+    <string name="dice_rolled">Dice rolled</string>
+    <string name="rolling_in_progress">Rolling…</string>
+    <string name="roll_complete">Roll complete</string>
+
+    <!-- Errors -->
+    <string name="error_invalid_input">Invalid input</string>
+    <string name="error_no_dice">Number of dice must be greater than zero</string>
+
+    <!-- Accessibility -->
+    <string name="roll_button_desc">Roll the dice</string>
+    <string name="reset_button_desc">Reset results</string>
 </resources>

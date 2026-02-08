@@ -13,7 +13,12 @@ import com.example.diceroller.R;
 import com.example.diceroller.logic.Dice;
 import com.example.diceroller.logic.DiceRoller;
 
+
 public class MainActivity extends AppCompatActivity {
+    private static final int MIN_DICE_VALUE = 1;
+    private static final int MAX_DICE_VALUE = 6;
+    private static final int MIN_DICE_COUNT = 1;
+    private static final int MAX_DICE_COUNT = 100;
 
     private DiceRoller diceRoller;
 
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         deleteEqualBtn = findViewById(R.id.deleteEqualBtn);
         deleteAboveBtn = findViewById(R.id.deleteAboveBtn);
         undoBtn = findViewById(R.id.undoBtn);
+        undoBtn.setEnabled(false);
         newRollBtn = findViewById(R.id.newRollBtn);
 
         rerollEqualBtn.setOnClickListener(v -> {
@@ -72,74 +78,105 @@ public class MainActivity extends AppCompatActivity {
         });
 
         newRollBtn.setOnClickListener(v -> {
-            //diceRoller.clear();
             diceRoller.rollMany(getDiceCount());
             renderState();
         });
+        renderState();
 
     }
 
     private void renderState() {
         int[] histogram = diceRoller.getHistogram();
 
-        if (histogram == null || histogram.length == 0) {
-            stateText.setText("No rolls yet");
+        if (diceRoller.getRolls().isEmpty()) {
+            stateText.setText(
+                    "No rolls yet\n\n" +
+                            "Use \"New roll\" to start rolling dice."
+            );
+            updateUndoState();
             return;
         }
 
         StringBuilder sb = new StringBuilder();
+        int numberOfRolls = 0;
 
         for (int i = 1; i < histogram.length; i++) {
+            numberOfRolls += histogram[i];
             sb.append("#")
                     .append(i)
                     .append(": ")
                     .append(histogram[i])
                     .append("\n");
         }
+        sb.append("Total: ")
+                .append(numberOfRolls);
 
         stateText.setText(sb.toString());
+        updateUndoState();
     }
-
     private int getDiceValue() {
         String text = valueInput.getText().toString().trim();
 
         if (text.isEmpty()) {
-            return 1;
+            valueInput.setError("Value required");
+            return MIN_DICE_VALUE;
         }
 
+        int value;
         try {
-            int value = Integer.parseInt(text);
-            if (value < 1) {
-                return 1;
-            }
-            if (value > 6) {
-                return 6;
-            }
-            return value;
+            value = Integer.parseInt(text);
         } catch (NumberFormatException e) {
-            return 1;
+            valueInput.setError("Invalid number");
+            return MIN_DICE_VALUE;
         }
+
+        if (value < MIN_DICE_VALUE || value > MAX_DICE_VALUE) {
+            valueInput.setError(
+                    "Value must be between " +
+                            MIN_DICE_VALUE + " and " + MAX_DICE_VALUE
+            );
+            return clamp(value, MIN_DICE_VALUE, MAX_DICE_VALUE);
+        }
+
+        valueInput.setError(null);
+        return value;
     }
+
 
     private int getDiceCount() {
         String text = countInput.getText().toString().trim();
 
         if (text.isEmpty()) {
-            return 1;
+            countInput.setError("Number of dice required");
+            return MIN_DICE_COUNT;
         }
 
+        int count;
         try {
-            int count = Integer.parseInt(text);
-            if (count < 1) {
-                return 1;
-            }
-            if (count > 100) {
-                return 100;
-            }
-            return count;
+            count = Integer.parseInt(text);
         } catch (NumberFormatException e) {
-            return 1;
+            countInput.setError("Invalid number");
+            return MIN_DICE_COUNT;
         }
+
+        if (count < MIN_DICE_COUNT || count > MAX_DICE_COUNT) {
+            countInput.setError(
+                    "Number of dice must be between " +
+                            MIN_DICE_COUNT + " and " + MAX_DICE_COUNT
+            );
+            return clamp(count, MIN_DICE_COUNT, MAX_DICE_COUNT);
+        }
+
+        countInput.setError(null);
+        return count;
     }
 
+
+    private void updateUndoState() {
+        undoBtn.setEnabled(diceRoller.canUndo());
+    }
+
+    private int clamp(int value, int min, int max) {
+        return Math.max(min, Math.min(value, max));
+    }
 }

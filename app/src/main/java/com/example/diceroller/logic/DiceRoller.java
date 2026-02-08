@@ -22,6 +22,7 @@ public class DiceRoller {
 
     public void rollMany(int numberOfRolls) {
         saveState();
+        rolls.clear();
         for (int i = 0; i < numberOfRolls; i++) {
             rolls.add(dice.roll());
         }
@@ -56,7 +57,6 @@ public class DiceRoller {
     }
 
     public void clear() {
-        saveState();
         rolls.clear();
     }
 
@@ -79,6 +79,11 @@ public class DiceRoller {
         rolls = history.pop();
         return true;
     }
+
+    public boolean canUndo() {
+        return !history.isEmpty();
+    }
+
 
     public int[] getHistogram() {
         int[] counts = new int[dice.getSides() + 1];

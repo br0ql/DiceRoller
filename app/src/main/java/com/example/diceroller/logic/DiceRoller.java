@@ -50,6 +50,11 @@ public class DiceRoller {
         rolls.removeIf(r -> (r == result));
     }
 
+    public void deleteAboveOrEqual(int result) {
+        saveState();
+        rolls.removeIf(r -> (r >= result));
+    }
+
     public void clear() {
         saveState();
         rolls.clear();

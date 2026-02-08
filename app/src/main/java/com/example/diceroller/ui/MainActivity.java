@@ -80,7 +80,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderState() {
-        stateText.setText(diceRoller.getRolls().toString());
+        int[] histogram = diceRoller.getHistogram();
+
+        if (histogram == null || histogram.length == 0) {
+            stateText.setText("No rolls yet");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 1; i < histogram.length; i++) {
+            sb.append("#")
+                    .append(i)
+                    .append(": ")
+                    .append(histogram[i])
+                    .append("\n");
+        }
+
+        stateText.setText(sb.toString());
     }
 
     private int getDiceValue() {

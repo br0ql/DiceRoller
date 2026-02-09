@@ -5,106 +5,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.MainActivity"
-    android:padding="16dp">
+    android:background="@color/bg_screen">
 
-    <!-- STATE / HISTOGRAM -->
+    <!-- RESULTS / STATE -->
     <TextView
         android:id="@+id/stateText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="120dp"
+        android:minHeight="140dp"
+        android:background="@color/bg_panel"
+        android:textColor="@color/text_primary"
+        android:padding="16dp"
         android:text="No rolls yet"
         android:textSize="16sp"
-        android:background="#EEEEEE"
-        android:padding="12dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
 
     <!-- DICE VALUE INPUT -->
-    <TextView
-        android:id="@+id/valueLabel"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/valueRow"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Dice value"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/stateText"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <EditText
-        android:id="@+id/valueInput"
-        android:layout_width="120dp"
+        <TextView
+            android:id="@+id/valueLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select dice:"/>
+
+        <EditText
+            android:id="@+id/valueInput"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="3"
+            android:text="1"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- REROLL SECTION -->
+    <TextView
+        android:id="@+id/rerollLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:text="1"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/stateText"
-        app:layout_constraintStart_toEndOf="@id/valueLabel"
-        android:layout_marginStart="12dp"/>
+        android:text="Reroll selected dice"
+        android:textStyle="bold"
+        android:textColor="@color/text_secondary"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/valueRow"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- REROLL BUTTONS -->
     <Button
         android:id="@+id/rerollEqualBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Reroll ="
-        app:layout_constraintTop_toBottomOf="@id/valueInput"
+        android:text="Reroll"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/rerollLabel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rerollAboveBtn"
-        android:layout_marginTop="16dp"/>
+        />
 
     <Button
         android:id="@+id/rerollAboveBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Reroll >="
-        app:layout_constraintTop_toBottomOf="@id/valueInput"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/rerollLabel"
         app:layout_constraintStart_toEndOf="@id/rerollEqualBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- DELETE BUTTONS -->
+    <!-- DELETE SECTION -->
+    <TextView
+        android:id="@+id/deleteLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete selected dice"
+        android:textStyle="bold"
+        android:textColor="@color/text_secondary"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/rerollEqualBtn"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
         android:id="@+id/deleteEqualBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Delete ="
-        app:layout_constraintTop_toBottomOf="@id/rerollEqualBtn"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/deleteLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/deleteAboveBtn"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toStartOf="@id/deleteAboveBtn"/>
 
     <Button
         android:id="@+id/deleteAboveBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Delete >="
-        app:layout_constraintTop_toBottomOf="@id/rerollAboveBtn"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/deleteLabel"
         app:layout_constraintStart_toEndOf="@id/deleteEqualBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- NUMBER OF DICE INPUT -->
-    <TextView
-        android:id="@+id/countLabel"
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#E5E7EB"
+        android:layout_marginVertical="16dp"
+        app:layout_constraintBottom_toTopOf="@id/countRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <LinearLayout
+        android:id="@+id/countRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of dice"
-        app:layout_constraintTop_toBottomOf="@id/deleteEqualBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="24dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintEnd_toEndOf="@id/newRollBtn"
+        app:layout_constraintBottom_toTopOf="@id/newRollBtn">
 
-    <EditText
-        android:id="@+id/countInput"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:text="5"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/deleteEqualBtn"
-        app:layout_constraintStart_toEndOf="@id/countLabel"
-        android:layout_marginStart="12dp"/>
+        <TextView
+            android:id="@+id/countLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of dice:"/>
+
+        <EditText
+            android:id="@+id/countInput"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="3"
+            android:text="5"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary" />
+    </LinearLayout>
+
 
     <!-- BOTTOM ACTIONS -->
     <Button
@@ -112,6 +173,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Undo"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -120,6 +182,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New roll"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

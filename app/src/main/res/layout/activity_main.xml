@@ -29,7 +29,7 @@
     <com.example.diceroller.ui.HistogramView
         android:id="@+id/histogramView"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="20dp"
         android:paddingLeft="32dp"

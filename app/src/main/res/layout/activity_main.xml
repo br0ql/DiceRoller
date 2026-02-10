@@ -9,7 +9,7 @@
     tools:context=".ui.MainActivity"
     android:background="@color/bg_screen">
 
-    <!-- RESULTS / STATE -->
+     <!-- RESULTS / STATE -->
     <TextView
         android:id="@+id/stateText"
         android:layout_width="0dp"
@@ -24,6 +24,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"/>
+
+    <!-- HISTOGRAM -->
+    <com.example.diceroller.ui.HistogramView
+        android:id="@+id/histogramView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        android:paddingLeft="32dp"
+        app:layout_constraintBottom_toTopOf="@id/countRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- DICE VALUE INPUT -->
     <LinearLayout

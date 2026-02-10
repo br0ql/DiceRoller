@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_DICE_COUNT = 100;
 
     private DiceRoller diceRoller;
+    private HistogramView histogramView;
 
     private TextView stateText;
     private EditText valueInput;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         diceRoller = new DiceRoller(new Dice(6));
+        histogramView = findViewById(R.id.histogramView);
 
         stateText = findViewById(R.id.stateText);
         valueInput = findViewById(R.id.valueInput);
@@ -56,31 +58,38 @@ public class MainActivity extends AppCompatActivity {
         rerollEqualBtn.setOnClickListener(v -> {
             diceRoller.rerollEqual(getDiceValue());
             renderState();
+            updateResultsUI();
+
         });
 
         rerollAboveBtn.setOnClickListener(v -> {
             diceRoller.rerollAboveOrEqual(getDiceValue());
             renderState();
+            updateResultsUI();
         });
 
         deleteEqualBtn.setOnClickListener(v -> {
             diceRoller.deleteEqual(getDiceValue());
             renderState();
+            updateResultsUI();
         });
 
         deleteAboveBtn.setOnClickListener(v -> {
             diceRoller.deleteAboveOrEqual(getDiceValue());
             renderState();
+            updateResultsUI();
         });
 
         undoBtn.setOnClickListener(v -> {
             diceRoller.undo();
             renderState();
+            updateResultsUI();
         });
 
         newRollBtn.setOnClickListener(v -> {
             diceRoller.rollMany(getDiceCount());
             renderState();
+            updateResultsUI();
         });
 
         getWindow().setSoftInputMode(
@@ -184,5 +193,10 @@ public class MainActivity extends AppCompatActivity {
 
     private int clamp(int value, int min, int max) {
         return Math.max(min, Math.min(value, max));
+    }
+
+    private void updateResultsUI() {
+        histogramView.setData(diceRoller.getHistogram());
+        stateText.setText(diceRoller.getRolls().toString());
     }
 }

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        diceRoller = new DiceRoller(new Dice(20));
+        diceRoller = new DiceRoller(new Dice(10));
         histogramView = findViewById(R.id.histogramView);
 
         stateText = findViewById(R.id.stateText);

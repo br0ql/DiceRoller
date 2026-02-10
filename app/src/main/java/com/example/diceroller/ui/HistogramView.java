@@ -95,8 +95,15 @@ public class HistogramView extends View {
 
             // wartosc kostki w srodku bara
             if (counts[i] != 0) {
+                String label;
+                int rolls = counts[i];
+                if (rolls == 1) {
+                    label = "1 roll";
+                } else {
+                    label = rolls + " rolls";
+                }
                 canvas.drawText(
-                        String.valueOf(counts[i]) + " rolls",
+                        label,
                         paddingLeft + 60,
                         textY,
                         valuePaint

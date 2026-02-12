@@ -5,9 +5,11 @@
     <color name="bg_screen">#FFFFFF</color>
     <color name="bg_panel">#F3F4F6</color>
 
+
     <!-- Text -->
     <color name="text_primary">#1F2937</color>
     <color name="text_secondary">#6B7280</color>
+
 
     <!-- Buttons -->
     <color name="btn_primary">#2563EB</color>

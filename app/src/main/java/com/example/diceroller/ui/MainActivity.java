@@ -41,56 +41,56 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         diceRoller = new DiceRoller(new Dice(10));
-        histogramView = findViewById(R.id.histogramView);
-
-        stateText = findViewById(R.id.stateText);
-        valueInput = findViewById(R.id.valueInput);
-        countInput = findViewById(R.id.countInput);
-
-        rerollEqualBtn = findViewById(R.id.rerollEqualBtn);
-        rerollAboveBtn = findViewById(R.id.rerollAboveBtn);
-        deleteEqualBtn = findViewById(R.id.deleteEqualBtn);
-        deleteAboveBtn = findViewById(R.id.deleteAboveBtn);
-        undoBtn = findViewById(R.id.undoBtn);
-        undoBtn.setEnabled(false);
-        newRollBtn = findViewById(R.id.newRollBtn);
-
-        rerollEqualBtn.setOnClickListener(v -> {
-            diceRoller.rerollEqual(getDiceValue());
-            renderState();
-            updateResultsUI();
-
-        });
-
-        rerollAboveBtn.setOnClickListener(v -> {
-            diceRoller.rerollAboveOrEqual(getDiceValue());
-            renderState();
-            updateResultsUI();
-        });
-
-        deleteEqualBtn.setOnClickListener(v -> {
-            diceRoller.deleteEqual(getDiceValue());
-            renderState();
-            updateResultsUI();
-        });
-
-        deleteAboveBtn.setOnClickListener(v -> {
-            diceRoller.deleteAboveOrEqual(getDiceValue());
-            renderState();
-            updateResultsUI();
-        });
-
-        undoBtn.setOnClickListener(v -> {
-            diceRoller.undo();
-            renderState();
-            updateResultsUI();
-        });
-
-        newRollBtn.setOnClickListener(v -> {
-            diceRoller.rollMany(getDiceCount());
-            renderState();
-            updateResultsUI();
-        });
+//        histogramView = findViewById(R.id.histogramView);
+//
+//        stateText = findViewById(R.id.stateText);
+//        valueInput = findViewById(R.id.valueInput);
+//        countInput = findViewById(R.id.countInput);
+//
+//        rerollEqualBtn = findViewById(R.id.rerollEqualBtn);
+//        rerollAboveBtn = findViewById(R.id.rerollAboveBtn);
+//        deleteEqualBtn = findViewById(R.id.deleteEqualBtn);
+//        deleteAboveBtn = findViewById(R.id.deleteAboveBtn);
+//        undoBtn = findViewById(R.id.undoBtn);
+//        undoBtn.setEnabled(false);
+//        newRollBtn = findViewById(R.id.newRollBtn);
+//
+//        rerollEqualBtn.setOnClickListener(v -> {
+//            diceRoller.rerollEqual(getDiceValue());
+//            renderState();
+//            updateResultsUI();
+//
+//        });
+//
+//        rerollAboveBtn.setOnClickListener(v -> {
+//            diceRoller.rerollAboveOrEqual(getDiceValue());
+//            renderState();
+//            updateResultsUI();
+//        });
+//
+//        deleteEqualBtn.setOnClickListener(v -> {
+//            diceRoller.deleteEqual(getDiceValue());
+//            renderState();
+//            updateResultsUI();
+//        });
+//
+//        deleteAboveBtn.setOnClickListener(v -> {
+//            diceRoller.deleteAboveOrEqual(getDiceValue());
+//            renderState();
+//            updateResultsUI();
+//        });
+//
+//        undoBtn.setOnClickListener(v -> {
+//            diceRoller.undo();
+//            renderState();
+//            updateResultsUI();
+//        });
+//
+//        newRollBtn.setOnClickListener(v -> {
+//            diceRoller.rollMany(getDiceCount());
+//            renderState();
+//            updateResultsUI();
+//        });
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
     private void renderState() {
         int[] histogram = diceRoller.getHistogram();
 
-        if (diceRoller.getRolls().isEmpty()) {
-            stateText.setText(
-                    "No rolls yet\n\n" +
-                            "Use \"New roll\" to start rolling dice."
-            );
-            updateUndoState();
-            return;
-        }
+//        if (diceRoller.getRolls().isEmpty()) {
+//            stateText.setText(
+//                    "No rolls yet\n\n" +
+//                            "Use \"New roll\" to start rolling dice."
+//            );
+//            updateUndoState();
+//            return;
+//        }
 
         StringBuilder sb = new StringBuilder();
         int numberOfRolls = 0;
@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
         sb.append("Total: ")
                 .append(numberOfRolls);
 
-        stateText.setText(sb.toString());
-        updateUndoState();
+//        stateText.setText(sb.toString());
+//        updateUndoState();
     }
     private int getDiceValue() {
         String text = valueInput.getText().toString().trim();

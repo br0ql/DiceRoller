@@ -9,42 +9,37 @@
     tools:context=".ui.MainActivity"
     android:background="?attr/colorSurface">
 
-    <!-- RESULTS / STATE -->
+    <!-- RESULTS / STATE  -->
+
+    <!-- HISTOGRAM -->
+
+
 <!--    <TextView-->
 <!--        android:id="@+id/stateText"-->
 <!--        android:layout_width="0dp"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:minHeight="140dp"-->
+<!--        android:layout_marginTop="40dp"-->
 <!--        android:background="@color/bg_panel"-->
-<!--        android:textColor="@color/text_primary"-->
+<!--        android:minHeight="140dp"-->
 <!--        android:padding="16dp"-->
 <!--        android:text="No rolls yet"-->
+<!--        android:textColor="@color/text_primary"-->
 <!--        android:textSize="16sp"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:layout_marginTop="24dp"/>-->
-
-<!--    &lt;!&ndash; HISTOGRAM &ndash;&gt;-->
-<!--    <com.example.diceroller.ui.HistogramView-->
-<!--        android:id="@+id/histogramView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="250dp"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        android:paddingLeft="32dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/countRow"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
+<!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
-<!--    <View-->
-<!--        android:id="@+id/bottomDivider"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:background="?attr/colorOutlineVariant"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/bottomPanel"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
+    <com.example.diceroller.ui.HistogramView
+        android:id="@+id/histogramView"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingLeft="32dp"
+        tools:layout_editor_absoluteY="180dp" />
 
     <LinearLayout
         android:id="@+id/bottomPanel"
@@ -87,12 +82,12 @@
 
 
                 <TextView
-                    android:id="@+id/diceCountText"
+                    android:id="@+id/rollCountText"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="5"
+                    android:text="10"
                     android:background="?attr/colorSurface"
                     android:textColor="?attr/colorOnSurface"
                     style="@style/AppLabelLarge" />

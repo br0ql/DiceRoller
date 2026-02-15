@@ -10,17 +10,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.EditText;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
 
 
@@ -29,8 +25,6 @@ import com.example.diceroller.logic.Dice;
 import com.example.diceroller.logic.DiceRoller;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int MIN_DICE_VALUE = 1;
-    private static final int MAX_DICE_VALUE = 6;
     private static final int MIN_DICE_COUNT = 1;
     private static final int MAX_DICE_COUNT = 100;
 
@@ -50,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -59,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bottomPanel = findViewById(R.id.bottomPanel);
 
-        //        Bottom panel position for different types of navigation
+        // Bottom panel position for different types of navigation
         ViewCompat.setOnApplyWindowInsetsListener(bottomPanel, (view, insets) -> {
 
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -97,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         rollCount = findViewById(R.id.rollCountText);
         undoBtn = findViewById(R.id.undoBtn);
         newRollBtn = findViewById(R.id.newRollBtn);
@@ -113,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         newRollBtn.setOnClickListener(v -> {
-            String text = rollCount.getText().toString();
-            int value = Integer.parseInt(text);
+            int value = Integer.parseInt(rollCount.getText().toString());
             diceRoller.rollMany(value);
             updateHistogram();
             updateUndoState();
@@ -126,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             rollCount.setText(String.valueOf(MIN_DICE_COUNT));
             updateRollButtonsState(MIN_DICE_COUNT);
 
-            return true; // ważne!
+            return true;
         });
 
         minusBtn.setOnClickListener(v -> changeRollCount(-1));
@@ -157,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         histogramAdapter.setData(list);
     }
 
-    // Method that is uded within recyclerview position method to offes end of list to above the bottom panel.
+    // Method that is used within recyclerview position method to offset end of list to above the bottom panel.
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
@@ -194,7 +190,4 @@ public class MainActivity extends AppCompatActivity {
         plusTenBtn.setAlpha(canIncrease ? 1f : 0.4f);
 
     }
-
-
-
 }

@@ -4,6 +4,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+
 
 public class DiceRoller {
     private Dice dice;
@@ -55,6 +58,28 @@ public class DiceRoller {
         saveState();
         rolls.removeIf(r -> (r >= result));
     }
+
+    public void reroll(List<Integer> valuesToReroll) {
+        saveState();
+
+        Set<Integer> rerollSet = new HashSet<>(valuesToReroll);
+
+        for (int i = 0; i < rolls.size(); i++) {
+            if (rerollSet.contains(rolls.get(i))) {
+                rolls.set(i, dice.roll());
+            }
+        }
+    }
+
+    public void delete(List<Integer> valuesToDelete) {
+
+        saveState();
+
+        Set<Integer> deleteSet = new HashSet<>(valuesToDelete);
+
+        rolls.removeIf(deleteSet::contains);
+    }
+
 
     public void clear() {
         rolls.clear();

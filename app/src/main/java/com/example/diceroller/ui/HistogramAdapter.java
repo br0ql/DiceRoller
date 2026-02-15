@@ -24,8 +24,19 @@ import java.util.List;
 
 public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.ViewHolder> {
 
+    public interface OnSelectionChangedListener {
+        void onSelectionChanged(int count);
+    }
+
+    private OnSelectionChangedListener selectionListener;
+
+    public void setOnSelectionChangedListener(OnSelectionChangedListener listener) {
+        this.selectionListener = listener;
+    }
+
     private List<HistogramItem> items = new ArrayList<>();
     private int maxCount = 0;
+    private boolean animateBars = true;
 
     public void setData(List<HistogramItem> newItems) {
         items = newItems;
@@ -35,8 +46,12 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
             if (item.count > maxCount) maxCount = item.count;
         }
 
+        animateBars = true; // animuj tylko przy nowym histogramie
         notifyDataSetChanged();
+
+        new android.os.Handler().postDelayed(() -> animateBars = false, 350);
     }
+
 
     @NonNull
     @Override
@@ -55,6 +70,15 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
     public int getItemCount() {
         return items.size();
     }
+
+    private int getSelectedCount() {
+        int count = 0;
+        for (HistogramItem item : items) {
+            if (item.isSelected) count++;
+        }
+        return count;
+    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -89,13 +113,18 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
                     item.isSelected ? selectedColor : normalColor
             );
 
-            // Klik
             itemView.setOnClickListener(v -> {
                 item.isSelected = !item.isSelected;
+
                 barView.setBackgroundColor(
                         item.isSelected ? selectedColor : normalColor
                 );
+
+                if (selectionListener != null) {
+                    selectionListener.onSelectionChanged(getSelectedCount());
+                }
             });
+
 
 
             barContainer.post(() -> {
@@ -106,23 +135,30 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
 
                 int targetWidth = (int) (maxWidth * percent);
 
-                ValueAnimator animator = ValueAnimator.ofInt(
-                        barView.getLayoutParams().width,
-                        targetWidth
-                );
+                ViewGroup.LayoutParams params = barView.getLayoutParams();
 
-                animator.setDuration(400);
-                animator.setInterpolator(new DecelerateInterpolator());
+                if (animateBars) {
 
-                animator.addUpdateListener(animation -> {
-                    int value = (int) animation.getAnimatedValue();
-                    ViewGroup.LayoutParams params = barView.getLayoutParams();
-                    params.width = value;
+                    params.width = 0;
                     barView.setLayoutParams(params);
-                });
 
-                animator.start();
+                    ValueAnimator animator = ValueAnimator.ofInt(0, targetWidth);
+                    animator.setDuration(300);
+                    animator.setInterpolator(new DecelerateInterpolator());
+
+                    animator.addUpdateListener(animation -> {
+                        params.width = (int) animation.getAnimatedValue();
+                        barView.setLayoutParams(params);
+                    });
+
+                    animator.start();
+
+                } else {
+                    params.width = targetWidth;
+                    barView.setLayoutParams(params);
+                }
             });
+
         }
     }
 
@@ -131,4 +167,18 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
             item.isSelected = false;
         }
     }
+
+    public List<Integer> getSelectedValues() {
+
+        List<Integer> selected = new ArrayList<>();
+
+        for (HistogramItem item : items) {
+            if (item.isSelected) {
+                selected.add(item.value);
+            }
+        }
+
+        return selected;
+    }
+
 }

@@ -22,8 +22,16 @@
         <!-- Style for all material buttons -->
         <item name="materialButtonStyle">@style/AppButtonStyle</item>
 
-        <!-- Ripple effect control -->
-        <item name="colorControlHighlight">#220B5D4B</item>
+        <!-- Primary text on primary -->
+        <item name="colorOnPrimary">#00382B</item>
+
+        <!-- Container color -->
+        <item name="colorPrimaryContainer">#C5EBDC</item>
+        <item name="colorOnPrimaryContainer">#00382B</item>
+
+        <!-- Outline (np. do outlined button) -->
+        <item name="colorOutline">#9FB5AA</item>
+
     </style>
 
     <style name="Theme.DiceRoller" parent="Base.Theme.DiceRoller" />

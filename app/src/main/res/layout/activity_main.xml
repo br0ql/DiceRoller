@@ -100,14 +100,14 @@
 
                 <TextView
                     android:id="@+id/rollCountText"
+                    style="@style/AppLabelLarge"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:textStyle="bold"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="50"
-                    android:background="?attr/colorSurface"
-                    android:textColor="?attr/colorOnSurface"
-                    style="@style/AppLabelLarge" />
+                    android:text="10"
+                    android:textColor="?attr/colorOnSurface" />
 
             </LinearLayout>
 

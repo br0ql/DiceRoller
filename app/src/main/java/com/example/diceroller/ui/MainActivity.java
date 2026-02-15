@@ -39,13 +39,16 @@ public class MainActivity extends AppCompatActivity {
     private HistogramAdapter histogramAdapter;
 
     private TextView rollCount;
+    private Button minusBtn;
+    private Button plusBtn;
+    private Button plusFiveBtn;
+    private Button plusTenBtn;
+    private Button undoBtn;
+    private Button newRollBtn;
+
     private LinearLayout bottomPanel;
 
 
-
-
-    private Button undoBtn;
-    private Button newRollBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         rollCount = findViewById(R.id.rollCountText);
         undoBtn = findViewById(R.id.undoBtn);
         newRollBtn = findViewById(R.id.newRollBtn);
+        minusBtn = findViewById(R.id.minusBtn);
+        plusBtn = findViewById(R.id.plusBtn);
+        plusFiveBtn = findViewById(R.id.plusFiveBtn);
+        plusTenBtn = findViewById(R.id.plusTenBtn);
+
 
         undoBtn.setOnClickListener(v -> {
             diceRoller.undo();
@@ -109,6 +117,25 @@ public class MainActivity extends AppCompatActivity {
             diceRoller.rollMany(value);
             updateHistogram();
         });
+
+        // Long press minusBtn to reset rollCount to MIN_DICE_COUNT
+        minusBtn.setOnLongClickListener(v -> {
+
+            rollCount.setText(String.valueOf(MIN_DICE_COUNT));
+            updateRollButtonsState(MIN_DICE_COUNT);
+
+            return true; // ważne!
+        });
+
+        minusBtn.setOnClickListener(v -> changeRollCount(-1));
+        plusBtn.setOnClickListener(v -> changeRollCount(1));
+        plusFiveBtn.setOnClickListener(v -> changeRollCount(5));
+        plusTenBtn.setOnClickListener(v -> changeRollCount(10));
+
+        // Updating roll buttons based on initial values already set in xml file
+        int initialValue = Integer.parseInt(rollCount.getText().toString());
+        updateRollButtonsState(initialValue);
+
         updateHistogram();
     }
 
@@ -128,9 +155,44 @@ public class MainActivity extends AppCompatActivity {
         histogramAdapter.setData(list);
     }
 
+    // Method that is uded within recyclerview position method to offes end of list to above the bottom panel.
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
     }
+
+    // Method for validating rollCountText value
+    private void changeRollCount(int delta) {
+        int value = Integer.parseInt(rollCount.getText().toString());
+
+        value += delta;
+
+        if (value < MIN_DICE_COUNT) {
+            value = MIN_DICE_COUNT;
+        }
+
+        if (value > MAX_DICE_COUNT) {
+            value = MAX_DICE_COUNT;
+        }
+
+        rollCount.setText(String.valueOf(value));
+        updateRollButtonsState(value);
+    }
+
+    private void updateRollButtonsState(int value) {
+        boolean canDecrease = value > MIN_DICE_COUNT;
+        minusBtn.setEnabled(canDecrease);
+        minusBtn.setAlpha(canDecrease ? 1f : 0.4f);
+
+        boolean canIncrease = value < MAX_DICE_COUNT;
+        plusBtn.setEnabled(canIncrease);
+        plusBtn.setAlpha(canIncrease ? 1f : 0.4f);
+        plusFiveBtn.setEnabled(canIncrease);
+        plusFiveBtn.setAlpha(canIncrease ? 1f : 0.4f);
+        plusTenBtn.setEnabled(canIncrease);
+        plusTenBtn.setAlpha(canIncrease ? 1f : 0.4f);
+
+    }
+
 
 
 }

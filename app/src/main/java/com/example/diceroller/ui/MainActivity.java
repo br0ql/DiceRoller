@@ -6,6 +6,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +19,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.view.ViewGroup;
+
+import android.widget.LinearLayout;
+
 
 import com.example.diceroller.R;
 import com.example.diceroller.logic.Dice;
@@ -30,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView histogramRecycler;
     private HistogramAdapter histogramAdapter;
 
-
-    private TextView stateText;
     private TextView rollCount;
+    private LinearLayout bottomPanel;
+
 
 
 
@@ -41,16 +49,49 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        diceRoller = new DiceRoller(new Dice(6));
+        bottomPanel = findViewById(R.id.bottomPanel);
+
+        //        Bottom panel position for different types of navigation
+        ViewCompat.setOnApplyWindowInsetsListener(bottomPanel, (view, insets) -> {
+
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            ViewGroup.MarginLayoutParams params =
+                    (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+            params.bottomMargin = systemBars.bottom;
+            view.setLayoutParams(params);
+
+            return insets;
+        });
+
+
+        diceRoller = new DiceRoller(new Dice(20));
         histogramRecycler = findViewById(R.id.histogramRecycler);
 
         histogramRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         histogramAdapter = new HistogramAdapter();
         histogramRecycler.setAdapter(histogramAdapter);
+
+        // Recyclerview position
+        bottomPanel.post(() -> {
+
+            int panelHeight = bottomPanel.getHeight() + dpToPx(20);
+
+            histogramRecycler.setPadding(
+                    histogramRecycler.getPaddingLeft(),
+                    histogramRecycler.getPaddingTop(),
+                    histogramRecycler.getPaddingRight(),
+                    panelHeight
+            );
+        });
+
 
 
         rollCount = findViewById(R.id.rollCountText);
@@ -85,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         histogramAdapter.setData(list);
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 
 

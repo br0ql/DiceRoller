@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        diceRoller = new DiceRoller(new Dice(20));
+        diceRoller = new DiceRoller(new Dice(10));
         histogramRecycler = findViewById(R.id.histogramRecycler);
 
         histogramRecycler.setLayoutManager(new LinearLayoutManager(this));

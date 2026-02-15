@@ -30,16 +30,34 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent"/>-->
 
-    <com.example.diceroller.ui.HistogramView
-        android:id="@+id/histogramView"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="40dp"
+
+
+<!-- Histogram -->
+
+<!--    <com.example.diceroller.ui.HistogramView-->
+<!--        android:id="@+id/histogramView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="250dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:paddingLeft="32dp"-->
+<!--        tools:layout_editor_absoluteY="180dp" />-->
+
+
+    <!-- Bottom panel -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/histogramRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+        android:paddingTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingLeft="32dp"
-        tools:layout_editor_absoluteY="180dp" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
         android:id="@+id/bottomPanel"
@@ -87,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="10"
+                    android:text="50"
                     android:background="?attr/colorSurface"
                     android:textColor="?attr/colorOnSurface"
                     style="@style/AppLabelLarge" />

@@ -10,6 +10,9 @@
         <!-- Light background -->
         <item name="colorSurface">#DDF3E8</item>
 
+        <!-- Variant of light background -->
+        <item name="colorSurfaceVariant">#E4E4E4</item>
+
         <!-- Text on surface -->
         <item name="colorOnSurface">#71867C</item>
 
@@ -21,33 +24,39 @@
 
         <!-- Ripple effect control -->
         <item name="colorControlHighlight">#220B5D4B</item>
-
-
     </style>
 
     <style name="Theme.DiceRoller" parent="Base.Theme.DiceRoller" />
 
-
     <!-- Text style -->
     <style name="AppLabelLarge" parent="TextAppearance.Material3.LabelLarge">
-
         <item name="android:fontFamily">@font/inter_family</item>
         <item name="android:textSize">16sp</item>
-
     </style>
-
 
     <!-- Style for buttons -->
     <style name="AppButtonStyle" parent="Widget.Material3.Button.TextButton">
-
         <item name="android:textAppearance">@style/AppLabelLarge</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="cornerRadius">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="rippleColor">#1A0B5D4B</item>
-
     </style>
+
+    <!-- Styles for histogram items -->
+    <style name="HistogramValueText">
+        <item name="android:textSize">14sp</item>
+<!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="HistogramCountText">
+        <item name="android:fontFamily">@font/inter_family</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
 
 
 

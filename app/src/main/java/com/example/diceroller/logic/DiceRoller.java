@@ -86,11 +86,11 @@ public class DiceRoller {
 
 
     public int[] getHistogram() {
-        int[] counts = new int[dice.getSides() + 1];
+        int[] histogram = new int[dice.getSides()];
         for (int result : rolls) {
-            counts[result]++;
+            histogram[result - 1]++;
         }
-        return counts;
+        return histogram;
     }
 
     public List<Integer> getRolls() {

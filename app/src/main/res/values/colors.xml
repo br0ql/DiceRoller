@@ -18,4 +18,7 @@
     <color name="btn_secondary">#E5E7EB</color>
     <color name="btn_secondary_text">#111827</color>
 
+    <!-- Histogram selected bar color -->
+    <color name="histogram_selected">#2F7D66</color>
+
 </resources>

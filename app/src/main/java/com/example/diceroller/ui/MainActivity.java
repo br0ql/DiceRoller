@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         undoBtn.setOnClickListener(v -> {
             diceRoller.undo();
             updateHistogram();
+            updateUndoState();
         });
 
         newRollBtn.setOnClickListener(v -> {
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             int value = Integer.parseInt(text);
             diceRoller.rollMany(value);
             updateHistogram();
+            updateUndoState();
         });
 
         // Long press minusBtn to reset rollCount to MIN_DICE_COUNT
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         // Updating roll buttons based on initial values already set in xml file
         int initialValue = Integer.parseInt(rollCount.getText().toString());
         updateRollButtonsState(initialValue);
-
+        updateUndoState();
         updateHistogram();
     }
 

@@ -164,7 +164,10 @@ public class MainActivity extends AppCompatActivity {
 
         Map<Integer, Integer> increments = new HashMap<>();
         for (int value : result.getNewValues()) {
-            increments.put(value, increments.getOrDefault(value, 0) + 1);
+            Integer current = increments.get(value);
+            int newCount = (current == null ? 0 : current) + 1;
+            increments.put(value, newCount);
+
         }
 
         histogramAdapter.clearSelection();

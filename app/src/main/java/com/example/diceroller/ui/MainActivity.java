@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initLogic() {
         dice = new Dice(numberOfSides);
-        diceRoller = new DiceRoller(new Dice(10));
+        diceRoller = new DiceRoller(dice);
     }
 
     private void initViews() {
@@ -136,6 +136,12 @@ public class MainActivity extends AppCompatActivity {
             updateRollButtonsState(MIN_DICE_COUNT);
             return true;
         });
+
+        rollCount.setOnLongClickListener(v -> {
+            showDicePickerDialog();
+            return true;
+        });
+
 
         undoBtn.setOnClickListener(v -> handleUndo());
         newRollBtn.setOnClickListener(v -> handleNewRoll());
@@ -283,5 +289,32 @@ public class MainActivity extends AppCompatActivity {
 
     private int dpToPx(int dp) {
         return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+    private void showDicePickerDialog() {
+
+        final String[] diceOptions = {"D4", "D6", "D8", "D10", "D12", "D20"};
+        final int[] diceValues = {4, 6, 8, 10, 12, 20};
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Select Dice")
+                .setItems(diceOptions, (dialog, which) -> {
+
+                    numberOfSides = diceValues[which];
+
+                    dice = new Dice(numberOfSides);
+                    diceRoller = new DiceRoller(new Dice(numberOfSides));
+
+                    rollCount.setText(
+                            getString(R.string.dice_count_label, numberOfRolls, numberOfSides)
+                    );
+
+                    histogramAdapter.clearSelection();
+                    histogramAdapter.clearHistory();
+                    histogramAdapter.clearIncrements();
+                    histogramAdapter.setData(new ArrayList<>());
+                    updateHistogram();
+
+                })
+                .show();
     }
 }

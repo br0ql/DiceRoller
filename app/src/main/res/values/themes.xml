@@ -11,7 +11,7 @@
         <item name="colorSurface">#DDF3E8</item>
 
         <!-- Variant of light background -->
-        <item name="colorSurfaceVariant">#E4E4E4</item>
+        <item name="colorSurfaceVariant">#DDE5E8</item>
 
         <!-- Text on surface -->
         <item name="colorOnSurface">#71867C</item>

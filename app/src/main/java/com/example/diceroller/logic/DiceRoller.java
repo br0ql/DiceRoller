@@ -59,16 +59,29 @@ public class DiceRoller {
         rolls.removeIf(r -> (r >= result));
     }
 
-    public void reroll(List<Integer> valuesToReroll) {
+    public RerollResult reroll(List<Integer> valuesToReroll) {
         saveState();
 
         Set<Integer> rerollSet = new HashSet<>(valuesToReroll);
 
+        List<Integer> oldValues = new ArrayList<>();
+        List<Integer> newValues = new ArrayList<>();
+
         for (int i = 0; i < rolls.size(); i++) {
-            if (rerollSet.contains(rolls.get(i))) {
-                rolls.set(i, dice.roll());
+            int currentValue = rolls.get(i);
+
+            if (rerollSet.contains(currentValue)) {
+                oldValues.add(currentValue);
+
+                int newValue = dice.roll();
+                rolls.set(i, newValue);
+
+                newValues.add(newValue);
             }
         }
+        System.out.println("ROLLS: " + rolls);
+        System.out.println("OLD VALUES SIZE: " + oldValues.size());
+        return new RerollResult(oldValues, newValues);
     }
 
     public void delete(List<Integer> valuesToDelete) {

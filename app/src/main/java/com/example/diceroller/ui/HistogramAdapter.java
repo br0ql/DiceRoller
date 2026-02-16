@@ -1,11 +1,11 @@
 package com.example.diceroller.ui;
+
 import com.example.diceroller.R;
 
 import com.google.android.material.color.MaterialColors;
 import androidx.core.content.ContextCompat;
-
-
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.animation.ValueAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,79 +14,140 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-
-
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.ViewHolder> {
+    private static final int TYPE_BAR = 0;
+    private static final int TYPE_INFO = 1;
 
     public interface OnSelectionChangedListener {
         void onSelectionChanged(int count);
     }
 
     private OnSelectionChangedListener selectionListener;
+    private java.util.Map<Integer, Integer> increments = new java.util.HashMap<>();
+
 
     public void setOnSelectionChangedListener(OnSelectionChangedListener listener) {
         this.selectionListener = listener;
     }
 
-    private List<HistogramItem> items = new ArrayList<>();
+    private final List<HistogramItem> bars = new ArrayList<>();
+    private final List<HistogramInfo> history = new ArrayList<>();
+
+
     private int maxCount = 0;
     private boolean animateBars = true;
 
-    public void setData(List<HistogramItem> newItems) {
-        items = newItems;
-        maxCount = 0;
+    // =========================
+    // DATA
+    // =========================
 
-        for (HistogramItem item : items) {
+    public void setData(List<HistogramItem> newItems) {
+
+        bars.clear();
+        bars.addAll(newItems);
+
+        maxCount = 0;
+        for (HistogramItem item : bars) {
             if (item.count > maxCount) maxCount = item.count;
         }
 
-        animateBars = true; // animuj tylko przy nowym histogramie
+        animateBars = true;
         notifyDataSetChanged();
 
-        new android.os.Handler().postDelayed(() -> animateBars = false, 350);
+        new android.os.Handler(android.os.Looper.getMainLooper())
+                .postDelayed(() -> animateBars = false, 350);
+
+    }
+
+    public void clearHistory() {
+        int historySize = history.size();
+        if (historySize == 0) return;
+
+        history.clear();
+        notifyItemRangeRemoved(bars.size(), historySize);
     }
 
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_histogram, parent, false);
-        return new ViewHolder(view);
+    public void addInfoMessage(String message) {
+        history.add(new HistogramInfo(message));
+        notifyItemInserted(bars.size() + history.size() - 1);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(items.get(position), maxCount);
+    public void setIncrements(java.util.Map<Integer, Integer> inc) {
+        this.increments = inc;
+        notifyItemRangeChanged(0, bars.size());
     }
+
+
+    public void clearIncrements() {
+        if (increments.isEmpty()) return;
+
+        increments.clear();
+        notifyItemRangeChanged(0, bars.size());
+    }
+
+
+
+    // =========================
+    // RECYCLER CORE
+    // =========================
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return bars.size() + history.size();
     }
 
-    private int getSelectedCount() {
-        int count = 0;
-        for (HistogramItem item : items) {
-            if (item.isSelected) count++;
+    @Override
+    public int getItemViewType(int position) {
+        if (position < bars.size()) {
+            return TYPE_BAR;
         }
-        return count;
+        return TYPE_INFO;
     }
 
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+        if (viewType == TYPE_INFO) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_histogram_info, parent, false);
+            return new InfoViewHolder(view);
+        }
+
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_histogram, parent, false);
+        return new BarViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        if (position < bars.size()) {
+            ((BarViewHolder) holder).bind(bars.get(position));
+        } else {
+            ((InfoViewHolder) holder)
+                    .bind(history.get(position - bars.size()));
+        }
+    }
+
+    // =========================
+    // BAR VIEW HOLDER
+    // =========================
+
+    class BarViewHolder extends RecyclerView.ViewHolder {
 
         TextView valueText, countText;
         View barView;
         FrameLayout barContainer;
 
-        ViewHolder(View itemView) {
+        BarViewHolder(View itemView) {
             super(itemView);
             valueText = itemView.findViewById(R.id.valueText);
             countText = itemView.findViewById(R.id.countText);
@@ -94,10 +155,19 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
             barContainer = itemView.findViewById(R.id.barContainer);
         }
 
-        void bind(HistogramItem item, int maxCount) {
+        void bind(HistogramItem item) {
 
             valueText.setText(String.valueOf(item.value));
-            countText.setText(String.valueOf(item.count));
+            Integer incObj = increments.get(item.value);
+            int inc = incObj != null ? incObj : 0;
+
+
+            if (inc > 0) {
+                countText.setText("(+" + inc + ") " + item.count);
+            } else {
+                countText.setText(String.valueOf(item.count));
+            }
+
 
             int selectedColor = ContextCompat.getColor(
                     itemView.getContext(),
@@ -114,6 +184,7 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
             );
 
             itemView.setOnClickListener(v -> {
+
                 item.isSelected = !item.isSelected;
 
                 barView.setBackgroundColor(
@@ -124,8 +195,6 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
                     selectionListener.onSelectionChanged(getSelectedCount());
                 }
             });
-
-
 
             barContainer.post(() -> {
 
@@ -158,27 +227,53 @@ public class HistogramAdapter extends RecyclerView.Adapter<HistogramAdapter.View
                     barView.setLayoutParams(params);
                 }
             });
-
         }
+    }
+
+    // =========================
+    // INFO VIEW HOLDER
+    // =========================
+
+    class InfoViewHolder extends RecyclerView.ViewHolder {
+
+        TextView infoText;
+
+        InfoViewHolder(View itemView) {
+            super(itemView);
+            infoText = itemView.findViewById(R.id.infoText);
+        }
+
+        void bind(HistogramInfo item) {
+            infoText.setText(item.infoText);
+        }
+    }
+
+    // =========================
+    // SELECTION HELPERS
+    // =========================
+
+    private int getSelectedCount() {
+        int count = 0;
+        for (HistogramItem item : bars) {
+            if (item.isSelected) count++;
+        }
+        return count;
     }
 
     public void clearSelection() {
-        for (HistogramItem item : items) {
+        for (HistogramItem item : bars) {
             item.isSelected = false;
         }
+        notifyDataSetChanged();
     }
 
     public List<Integer> getSelectedValues() {
-
         List<Integer> selected = new ArrayList<>();
-
-        for (HistogramItem item : items) {
+        for (HistogramItem item : bars) {
             if (item.isSelected) {
                 selected.add(item.value);
             }
         }
-
         return selected;
     }
-
 }

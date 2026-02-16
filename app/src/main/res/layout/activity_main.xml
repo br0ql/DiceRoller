@@ -59,6 +59,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rerollSelectedBtn"
+        style="@style/RerollButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:text="Reroll Selected"
+        android:visibility="gone"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintBottom_toTopOf="@id/bottomPanel"/>
+
+
+
     <LinearLayout
         android:id="@+id/bottomPanel"
         android:layout_width="0dp"

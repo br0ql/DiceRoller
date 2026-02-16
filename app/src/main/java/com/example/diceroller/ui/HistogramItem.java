@@ -1,6 +1,6 @@
 package com.example.diceroller.ui;
 
-public class HistogramItem {
+public class HistogramItem implements HistogramEntry {
 
     public final int value;
     public final int count;

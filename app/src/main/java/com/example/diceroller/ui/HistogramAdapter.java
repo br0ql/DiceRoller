@@ -3,8 +3,10 @@ package com.example.diceroller.ui;
 import com.example.diceroller.R;
 
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.card.MaterialCardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.animation.ValueAnimator;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 
@@ -146,6 +149,8 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView valueText, countText;
         View barView;
         FrameLayout barContainer;
+        MaterialCardView valueCard;
+
 
         BarViewHolder(View itemView) {
             super(itemView);
@@ -153,6 +158,7 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             countText = itemView.findViewById(R.id.countText);
             barView = itemView.findViewById(R.id.barView);
             barContainer = itemView.findViewById(R.id.barContainer);
+            valueCard = itemView.findViewById(R.id.valueCard);
         }
 
         void bind(HistogramItem item) {
@@ -182,19 +188,24 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             barView.setBackgroundColor(
                     item.isSelected ? selectedColor : normalColor
             );
+            valueCard.setCardBackgroundColor(
+                    item.isSelected ? selectedColor : normalColor
+            );
 
             itemView.setOnClickListener(v -> {
 
                 item.isSelected = !item.isSelected;
 
-                barView.setBackgroundColor(
-                        item.isSelected ? selectedColor : normalColor
-                );
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    notifyItemChanged(pos);
+                }
 
                 if (selectionListener != null) {
                     selectionListener.onSelectionChanged(getSelectedCount());
                 }
             });
+
 
             barContainer.post(() -> {
 

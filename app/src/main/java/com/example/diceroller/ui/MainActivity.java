@@ -29,15 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int MIN_DICE_COUNT = 1;
     private static final int MAX_DICE_COUNT = 100;
+    private int numberOfRolls = 10;
+    private int numberOfSides = 10;
 
     private DiceRoller diceRoller;
+    private Dice dice;
+
     private HistogramAdapter histogramAdapter;
 
     private RecyclerView histogramRecycler;
     private LinearLayout bottomPanel;
-
-    private TextView rollCount;
-    private Button minusBtn, plusBtn, plusFiveBtn, plusTenBtn;
+    private Button minusBtn, rollCount, plusBtn, plusFiveBtn, plusTenBtn;
     private Button undoBtn, newRollBtn, rerollSelectedBtn;
 
     @Override
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     // =========================
 
     private void initLogic() {
+        dice = new Dice(numberOfSides);
         diceRoller = new DiceRoller(new Dice(10));
     }
 
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         undoBtn = findViewById(R.id.undoBtn);
         newRollBtn = findViewById(R.id.newRollBtn);
         rerollSelectedBtn = findViewById(R.id.rerollSelectedBtn);
+        rerollSelectedBtn.setText("Reroll selected");
+        rerollSelectedBtn.setVisibility(View.GONE);
     }
 
     private void setupRecycler() {
@@ -85,9 +90,13 @@ public class MainActivity extends AppCompatActivity {
         histogramRecycler.setAdapter(histogramAdapter);
 
         histogramAdapter.setOnSelectionChangedListener(count -> {
-            if (count > 0) showRerollButton();
-            else hideRerollButton();
+            if (count > 0) {
+                showRerollButton();
+            } else {
+                hideRerollButton();
+            }
         });
+
     }
 
     private void setupBottomPanelInsets() {
@@ -116,14 +125,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-
         minusBtn.setOnClickListener(v -> changeRollCount(-1));
         plusBtn.setOnClickListener(v -> changeRollCount(1));
         plusFiveBtn.setOnClickListener(v -> changeRollCount(5));
         plusTenBtn.setOnClickListener(v -> changeRollCount(10));
 
         minusBtn.setOnLongClickListener(v -> {
-            rollCount.setText(String.valueOf(MIN_DICE_COUNT));
+            numberOfRolls = MIN_DICE_COUNT;
+            rollCount.setText(getString(R.string.dice_count_label, numberOfRolls, dice.getSides()));
             updateRollButtonsState(MIN_DICE_COUNT);
             return true;
         });
@@ -145,10 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleNewRoll() {
-        int value = getRollCount();
         histogramAdapter.clearHistory();
         histogramAdapter.clearIncrements();
-        diceRoller.rollMany(value);
+        diceRoller.rollMany(numberOfRolls);
         refreshAll();
     }
 
@@ -177,10 +185,19 @@ public class MainActivity extends AppCompatActivity {
         List<Integer> oldVals = result.getOldValues();
         List<Integer> newVals = result.getNewValues();
 
+        StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < oldVals.size(); i++) {
-            String message = oldVals.get(i) + " → " + newVals.get(i);
-            histogramAdapter.addInfoMessage(message);
+            sb.append(oldVals.get(i))
+                    .append(" → ")
+                    .append(newVals.get(i));
+
+            if (i < oldVals.size() - 1) {
+                sb.append("  |  ");
+            }
         }
+
+        histogramAdapter.addInfoMessage(sb.toString());
 
         hideRerollButton();
     }
@@ -192,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
     private void refreshAll() {
         updateHistogram();
         updateUndoState();
-        updateRollButtonsState(getRollCount());
+        updateRollButtonsState(numberOfRolls);
     }
 
     private void updateHistogram() {
@@ -210,18 +227,14 @@ public class MainActivity extends AppCompatActivity {
         return list;
     }
 
-    private int getRollCount() {
-        return Integer.parseInt(rollCount.getText().toString());
-    }
-
     private void changeRollCount(int delta) {
-        int value = getRollCount() + delta;
+        numberOfRolls += delta;
 
-        if (value < MIN_DICE_COUNT) value = MIN_DICE_COUNT;
-        if (value > MAX_DICE_COUNT) value = MAX_DICE_COUNT;
+        if (numberOfRolls < MIN_DICE_COUNT) numberOfRolls = MIN_DICE_COUNT;
+        if (numberOfRolls > MAX_DICE_COUNT) numberOfRolls = MAX_DICE_COUNT;
 
-        rollCount.setText(String.valueOf(value));
-        updateRollButtonsState(value);
+        rollCount.setText(getString(R.string.dice_count_label, numberOfRolls, dice.getSides()));
+        updateRollButtonsState(numberOfRolls);
     }
 
     private void updateRollButtonsState(int value) {

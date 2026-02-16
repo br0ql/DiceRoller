@@ -52,23 +52,26 @@
         android:id="@+id/histogramRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingTop="20dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/rerollSelectedBtn"
         style="@style/RerollButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:text="Reroll Selected"
         android:visibility="gone"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        app:cornerRadius="32dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
@@ -91,83 +94,54 @@
         android:clipToOutline="true">
 
         <!-- ================= TOP ROW ( - | 5 | + | +5 | +10 ) ================= -->
+        <!-- ================= TOP ROW ================= -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal">
 
-            <!-- ===== 40% ( - i licznik ) ===== -->
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/minusBtn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:orientation="horizontal">
+                android:layout_weight="0.175"
+                android:text="-" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/minusBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="-"
-                    app:cornerRadius="0dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    />
-
-
-                <TextView
-                    android:id="@+id/rollCountText"
-                    style="@style/AppLabelLarge"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="10"
-                    android:textColor="?attr/colorOnSurface" />
-
-            </LinearLayout>
-
-            <!-- ===== 60% ( +, +5, +10 ) ===== -->
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/rollCountText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
-                android:orientation="horizontal">
+                android:layout_weight="0.30"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="20sp"
+                android:includeFontPadding="false"
+                android:text="10 D6"
+                android:textStyle="bold" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/plusBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="+"
-                    app:cornerRadius="0dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/plusBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.175"
+                android:text="+" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/plusFiveBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="+5"
-                    app:cornerRadius="0dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/plusFiveBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.175"
+                android:text="+5" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/plusTenBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="+10"
-                    app:cornerRadius="0dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/plusTenBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.175"
+                android:text="+10" />
 
-            </LinearLayout>
         </LinearLayout>
+
 
         <!-- ================= BOTTOM ROW ( Undo | New Roll ) ================= -->
         <LinearLayout

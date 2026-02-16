@@ -7,6 +7,8 @@
     <string name="clear_button">Clear</string>
     <string name="reroll_button">Re-roll</string>
     <string name="delete_button">Delete</string>
+    <string name="dice_count_label">%1$d D%2$d</string>
+
 
 
     <!-- Labels / Inputs -->

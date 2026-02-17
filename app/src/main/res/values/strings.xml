@@ -33,4 +33,21 @@
     <!-- Accessibility -->
     <string name="roll_button_desc">Roll the dice</string>
     <string name="reset_button_desc">Reset results</string>
+
+    <!-- First open message -->
+    <string name="intro_title">Welcome to Dice Roller</string>
+
+    <string name="intro_message">
+Dice Roller lets you quickly roll and reroll dice sets.\n\n
+How to use the app:\n\n
+• Adjust the number of dice using the + and − buttons\n
+• Tap "New Roll" to generate results\n
+• Tap one or more result bars to select them, then tap "Reroll Selected"\n
+• Long press the dice counter to change the dice type (default D6)\n
+• Long press the − button to reset the dice count\n\n
+Enjoy rolling!
+</string>
+
+    <string name="intro_button_positive">Got it!</string>
+
 </resources>

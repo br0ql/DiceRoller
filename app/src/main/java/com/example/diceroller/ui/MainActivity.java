@@ -308,8 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
                     numberOfSides = diceValues[which];
 
-                    dice = new Dice(numberOfSides);
-                    diceRoller = new DiceRoller(new Dice(numberOfSides));
+                    initLogic();
 
                     rollCount.setText(
                             getString(R.string.dice_count_label, numberOfRolls, numberOfSides)
@@ -339,27 +338,15 @@ public class MainActivity extends AppCompatActivity {
 
     // Message to show when app opening the app for the first time
     private void showIntroDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Welcome to Dice Roller")
 
-                .setMessage(
-                        "Dice Roller lets you quickly roll and reroll dice sets.\n\n" +
-
-                                "How to use the app:\n\n" +
-
-                                "• Adjust the number of dice using the + and − buttons\n" +
-                                "• Tap \"New Roll\" to generate results\n" +
-                                "• Tap one or more result bars to select them, then tap \"Reroll Selected\"\n" +
-                                "• Long press the dice counter to change the dice type\n" +
-                                "• Long press the − button to reset the dice count\n\n" +
-
-                                "Enjoy rolling!"
-                )
-
-                .setPositiveButton("Got it!", null)
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.intro_title))
+                .setMessage(getString(R.string.intro_message))
+                .setPositiveButton(getString(R.string.intro_button_positive), null)
                 .setCancelable(false)
                 .show();
     }
+
 
 
 }

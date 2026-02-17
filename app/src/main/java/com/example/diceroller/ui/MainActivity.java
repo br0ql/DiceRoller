@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
+import androidx.appcompat.app.AlertDialog;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.content.SharedPreferences;
 
 import com.example.diceroller.R;
 import com.example.diceroller.logic.Dice;
@@ -53,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
         setupRecycler();
         setupBottomPanelInsets();
         setupButtons();
-
         refreshAll();
+        checkFirstRun();
+        showIntroDialog();
     }
 
     // =========================
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         undoBtn = findViewById(R.id.undoBtn);
         newRollBtn = findViewById(R.id.newRollBtn);
         rerollSelectedBtn = findViewById(R.id.rerollSelectedBtn);
-        rerollSelectedBtn.setText("Reroll selected");
         rerollSelectedBtn.setVisibility(View.GONE);
     }
 
@@ -141,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             showDicePickerDialog();
             return true;
         });
-
 
         undoBtn.setOnClickListener(v -> handleUndo());
         newRollBtn.setOnClickListener(v -> handleNewRoll());
@@ -323,4 +323,43 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
     }
+    // Checking if app is being run for the first time
+    private void checkFirstRun() {
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            showIntroDialog();
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstRun", false);
+            editor.apply();
+        }
+    }
+
+    // Message to show when app opening the app for the first time
+    private void showIntroDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Welcome to Dice Roller")
+
+                .setMessage(
+                        "Dice Roller lets you quickly roll and reroll dice sets.\n\n" +
+
+                                "How to use the app:\n\n" +
+
+                                "• Adjust the number of dice using the + and − buttons\n" +
+                                "• Tap \"New Roll\" to generate results\n" +
+                                "• Tap one or more result bars to select them, then tap \"Reroll Selected\"\n" +
+                                "• Long press the dice counter to change the dice type\n" +
+                                "• Long press the − button to reset the dice count\n\n" +
+
+                                "Enjoy rolling!"
+                )
+
+                .setPositiveButton("Got it!", null)
+                .setCancelable(false)
+                .show();
+    }
+
+
 }

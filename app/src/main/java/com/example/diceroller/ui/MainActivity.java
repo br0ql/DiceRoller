@@ -178,11 +178,15 @@ public class MainActivity extends AppCompatActivity {
         RerollResult result = diceRoller.reroll(selected);
 
         Map<Integer, Integer> increments = new HashMap<>();
-        for (int value : result.getNewValues()) {
-            Integer current = increments.get(value);
-            int newCount = (current == null ? 0 : current) + 1;
-            increments.put(value, newCount);
+        for (int oldValue : result.getOldValues()) {
+            int current =  increments.getOrDefault(oldValue, 0);
+            increments.put(oldValue, current - 1);
 
+        }
+
+        for (int newValue : result.getNewValues()) {
+            int current = increments.getOrDefault(newValue, 0);
+            increments.put(newValue, current + 1);
         }
 
         histogramAdapter.clearSelection();

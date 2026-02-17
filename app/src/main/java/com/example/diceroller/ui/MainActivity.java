@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         diceRoller.undo();
         histogramAdapter.clearHistory();
         histogramAdapter.clearIncrements();
+        histogramAdapter.clearSelection();
         refreshAll();
     }
 
@@ -215,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
     private void refreshAll() {
         updateHistogram();
         updateUndoState();
+        histogramAdapter.clearSelection();
+        hideRerollButton();
         updateRollButtonsState(numberOfRolls);
     }
 
@@ -312,8 +315,7 @@ public class MainActivity extends AppCompatActivity {
                     histogramAdapter.clearHistory();
                     histogramAdapter.clearIncrements();
                     histogramAdapter.setData(new ArrayList<>());
-                    updateHistogram();
-
+                    refreshAll();
                 })
                 .show();
     }

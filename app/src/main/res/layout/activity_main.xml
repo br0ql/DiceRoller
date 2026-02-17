@@ -9,43 +9,6 @@
     tools:context=".ui.MainActivity"
     android:background="?attr/colorSurface">
 
-    <!-- RESULTS / STATE  -->
-
-    <!-- HISTOGRAM -->
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/stateText"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:background="@color/bg_panel"-->
-<!--        android:minHeight="140dp"-->
-<!--        android:padding="16dp"-->
-<!--        android:text="No rolls yet"-->
-<!--        android:textColor="@color/text_primary"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"/>-->
-
-
-
-<!-- Histogram -->
-
-<!--    <com.example.diceroller.ui.HistogramView-->
-<!--        android:id="@+id/histogramView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="250dp"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:paddingLeft="32dp"-->
-<!--        tools:layout_editor_absoluteY="180dp" />-->
-
-
     <!-- Bottom panel -->
 
     <androidx.recyclerview.widget.RecyclerView
@@ -53,7 +16,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingTop="30dp"
+        android:paddingTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -93,7 +56,6 @@
         android:elevation="8dp"
         android:clipToOutline="true">
 
-        <!-- ================= TOP ROW ( - | 5 | + | +5 | +10 ) ================= -->
         <!-- ================= TOP ROW ================= -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -143,7 +105,7 @@
         </LinearLayout>
 
 
-        <!-- ================= BOTTOM ROW ( Undo | New Roll ) ================= -->
+        <!-- ================= BOTTOM ROW ================= -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"

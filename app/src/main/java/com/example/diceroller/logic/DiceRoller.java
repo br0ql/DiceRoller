@@ -10,12 +10,11 @@ import java.util.HashSet;
 
 public class DiceRoller {
     private Dice dice;
-    // Typ List bo ArrayList jest wariantem listy. W ten sposob
-    // w razie czego mozna uzyc pozniej ArrayList lub LinkedList bez zmiany kodu tutaj.
+    // List type is a supertype and includes ArrayList for potential further use.
     private List<Integer> rolls;
-    // Obiekt Deque ktory jest stosem zbudowanym z List<Integer>.
+    // Deque object that is a list composed of integers
     private Deque<List<Integer>> history = new ArrayDeque<>();
-    // Maksymalne długość stosu.
+    // Max stack height
     private static final int MAX_HISTORY = 5;
 
     public DiceRoller(Dice dice) {
@@ -79,8 +78,6 @@ public class DiceRoller {
                 newValues.add(newValue);
             }
         }
-        System.out.println("ROLLS: " + rolls);
-        System.out.println("OLD VALUES SIZE: " + oldValues.size());
         return new RerollResult(oldValues, newValues);
     }
 

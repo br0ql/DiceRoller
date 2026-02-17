@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         setupButtons();
         refreshAll();
         checkFirstRun();
-        showIntroDialog();
     }
 
     // =========================
@@ -316,7 +315,6 @@ public class MainActivity extends AppCompatActivity {
                     histogramAdapter.clearSelection();
                     histogramAdapter.clearHistory();
                     histogramAdapter.clearIncrements();
-                    histogramAdapter.setData(new ArrayList<>());
                     refreshAll();
                 })
                 .show();

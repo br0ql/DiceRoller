@@ -3,6 +3,4 @@
     <!-- Histogram selected bar color -->
     <color name="histogram_selected">#FFC7BA</color>
 
-    <color name="colorPrimary">#8ED8B4</color>
-
 </resources>

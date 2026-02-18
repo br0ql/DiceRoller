@@ -1,6 +1,7 @@
 package com.example.diceroller.ui;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,8 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int MIN_DICE_COUNT = 1;
     private static final int MAX_DICE_COUNT = 100;
-    private int numberOfRolls = 10;
+    private int diceCount = 10;
     private int numberOfSides = 10;
+    private static final String KEY_DICE_COUNT = "key_dice_count";
+    private static final String KEY_DICE_SIDES = "key_dice_sides";
+    private static final String KEY_ROLLS = "key_rolls";
+    private static final String PREFS_NAME = "app_prefs";
+    private static final String KEY_FIRST_RUN = "isFirstRun";
 
     private DiceRoller diceRoller;
     private Dice dice;
@@ -48,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        restoreLogic(savedInstanceState);
         initLogic();
+        restoreDiceRollerRolls(savedInstanceState);
         initViews();
         setupRecycler();
         setupBottomPanelInsets();
@@ -124,14 +132,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
+        changeRollCount(0);
         minusBtn.setOnClickListener(v -> changeRollCount(-1));
         plusBtn.setOnClickListener(v -> changeRollCount(1));
         plusFiveBtn.setOnClickListener(v -> changeRollCount(5));
         plusTenBtn.setOnClickListener(v -> changeRollCount(10));
 
         minusBtn.setOnLongClickListener(v -> {
-            numberOfRolls = MIN_DICE_COUNT;
-            rollCount.setText(getString(R.string.dice_count_label, numberOfRolls, dice.getSides()));
+            diceCount = MIN_DICE_COUNT;
+            rollCount.setText(getString(R.string.dice_count_label, diceCount, dice.getSides()));
             updateRollButtonsState(MIN_DICE_COUNT);
             return true;
         });
@@ -161,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     private void handleNewRoll() {
         histogramAdapter.clearHistory();
         histogramAdapter.clearIncrements();
-        diceRoller.rollMany(numberOfRolls);
+        diceRoller.rollMany(diceCount);
         refreshAll();
     }
 
@@ -220,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         updateUndoState();
         histogramAdapter.clearSelection();
         hideRerollButton();
-        updateRollButtonsState(numberOfRolls);
+        updateRollButtonsState(diceCount);
     }
 
     private void updateHistogram() {
@@ -239,13 +248,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeRollCount(int delta) {
-        numberOfRolls += delta;
+        diceCount += delta;
 
-        if (numberOfRolls < MIN_DICE_COUNT) numberOfRolls = MIN_DICE_COUNT;
-        if (numberOfRolls > MAX_DICE_COUNT) numberOfRolls = MAX_DICE_COUNT;
+        if (diceCount < MIN_DICE_COUNT) diceCount = MIN_DICE_COUNT;
+        if (diceCount > MAX_DICE_COUNT) diceCount = MAX_DICE_COUNT;
 
-        rollCount.setText(getString(R.string.dice_count_label, numberOfRolls, dice.getSides()));
-        updateRollButtonsState(numberOfRolls);
+        rollCount.setText(getString(R.string.dice_count_label, diceCount, dice.getSides()));
+        updateRollButtonsState(diceCount);
     }
 
     private void updateRollButtonsState(int value) {
@@ -301,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         final int[] diceValues = {4, 6, 8, 10, 12, 20};
 
         new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
-                .setTitle("Select Dice")
+                .setTitle(getString(R.string.select_dice_title))
                 .setItems(diceOptions, (dialog, which) -> {
 
                     numberOfSides = diceValues[which];
@@ -309,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
                     initLogic();
 
                     rollCount.setText(
-                            getString(R.string.dice_count_label, numberOfRolls, numberOfSides)
+                            getString(R.string.dice_count_label, diceCount, numberOfSides)
                     );
 
                     histogramAdapter.clearSelection();
@@ -321,14 +330,14 @@ public class MainActivity extends AppCompatActivity {
     }
     // Checking if app is being run for the first time
     private void checkFirstRun() {
-        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
-        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isFirstRun = prefs.getBoolean(KEY_FIRST_RUN, true);
 
         if (isFirstRun) {
             showIntroDialog();
 
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("isFirstRun", false);
+            editor.putBoolean(KEY_FIRST_RUN, false);
             editor.apply();
         }
     }
@@ -342,6 +351,39 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.intro_button_positive), null)
                 .setCancelable(false)
                 .show();
+    }
+
+    // Saving app state when device rotates to landscape mode
+    @Override
+    protected void onSaveInstanceState (@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Saving die info for logic initialization
+        outState.putInt(KEY_DICE_COUNT, diceCount);
+        outState.putInt(KEY_DICE_SIDES, numberOfSides);
+
+        //Saving results array
+        outState.putIntegerArrayList(KEY_ROLLS, new ArrayList<>(diceRoller.getRolls()));
+    }
+
+    // Helper method to restore app logic in onCreate, when rotation to landscape mode happens
+    private void restoreLogic (Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+
+            diceCount = savedInstanceState.getInt(KEY_DICE_COUNT, 10);
+            numberOfSides = savedInstanceState.getInt(KEY_DICE_SIDES, 10);
+        }
+
+    }
+
+    // Helper method to restore last roll results in onCreate, when rotation to landscape mode happens
+    private void restoreDiceRollerRolls (Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            ArrayList<Integer> savedRolls = savedInstanceState.getIntegerArrayList(KEY_ROLLS);
+            if (savedRolls != null) {
+                diceRoller.restoreRolls(savedRolls);
+            }
+        }
     }
 
 

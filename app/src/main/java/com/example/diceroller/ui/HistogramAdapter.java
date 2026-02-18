@@ -57,7 +57,7 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         maxCount = 0;
         for (HistogramItem item : bars) {
-            if (item.count > maxCount) maxCount = item.count;
+            if (item.getCount() > maxCount) maxCount = item.getCount();
         }
 
         animateBars = true;
@@ -163,15 +163,15 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void bind(HistogramItem item) {
 
-            valueText.setText(String.valueOf(item.value));
-            Integer incObj = increments.get(item.value);
+            valueText.setText(String.valueOf(item.getValue()));
+            Integer incObj = increments.get(item.getValue());
             int inc = incObj != null ? incObj : 0;
 
 
             if (inc > 0) {
-                countText.setText("(+" + inc + ") " + item.count);
+                countText.setText("(+" + inc + ") " + item.getCount());
             } else {
-                countText.setText(String.valueOf(item.count));
+                countText.setText(String.valueOf(item.getCount()));
             }
 
 
@@ -186,15 +186,19 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             );
 
             barView.setBackgroundColor(
-                    item.isSelected ? selectedColor : normalColor
+                    item.isSelected() ? selectedColor : normalColor
             );
             valueCard.setCardBackgroundColor(
-                    item.isSelected ? selectedColor : normalColor
+                    item.isSelected() ? selectedColor : normalColor
             );
 
             itemView.setOnClickListener(v -> {
 
-                item.isSelected = !item.isSelected;
+                if (item.isSelected()) {
+                    item.setUnselected();
+                } else {
+                    item.setSelected();
+                }
 
                 int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
@@ -211,7 +215,7 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 int maxWidth = barContainer.getWidth();
                 float percent = maxCount == 0 ? 0 :
-                        (float) item.count / maxCount;
+                        (float) item.getCount() / maxCount;
 
                 int targetWidth = (int) (maxWidth * percent);
 
@@ -266,14 +270,14 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private int getSelectedCount() {
         int count = 0;
         for (HistogramItem item : bars) {
-            if (item.isSelected) count++;
+            if (item.isSelected()) count++;
         }
         return count;
     }
 
     public void clearSelection() {
         for (HistogramItem item : bars) {
-            item.isSelected = false;
+            item.setUnselected();
         }
         notifyDataSetChanged();
     }
@@ -281,8 +285,8 @@ public class HistogramAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public List<Integer> getSelectedValues() {
         List<Integer> selected = new ArrayList<>();
         for (HistogramItem item : bars) {
-            if (item.isSelected) {
-                selected.add(item.value);
+            if (item.isSelected()) {
+                selected.add(item.getValue());
             }
         }
         return selected;

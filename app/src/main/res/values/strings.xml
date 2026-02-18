@@ -50,4 +50,7 @@ Enjoy rolling!
 
     <string name="intro_button_positive">Got it!</string>
 
+    <!-- Dice selector menu -->
+    <string name="select_dice_title">Select Dice</string>
+
 </resources>

@@ -9,11 +9,11 @@ import java.util.HashSet;
 
 
 public class DiceRoller {
-    private Dice dice;
+    private final Dice dice;
     // List type is a supertype and includes ArrayList for potential further use.
     private List<Integer> rolls;
     // Deque object that is a list composed of integers
-    private Deque<List<Integer>> history = new ArrayDeque<>();
+    private final Deque<List<Integer>> history = new ArrayDeque<>();
     // Max stack height
     private static final int MAX_HISTORY = 5;
 
@@ -92,12 +92,13 @@ public class DiceRoller {
 
 
     public void clear() {
+        saveState();
         rolls.clear();
     }
 
     // Method that saves the current state of the rolls list.
     // It will also keep the size of stack to be < 5.
-    public void saveState() {
+    private void saveState() {
         // Pushing copy of rolls list to the top of the stack.
         history.push(new ArrayList<>(rolls));
 
@@ -129,7 +130,11 @@ public class DiceRoller {
     }
 
     public List<Integer> getRolls() {
-        return rolls;
+        return new ArrayList<>(rolls);
+    }
+
+    public void restoreRolls(List<Integer> rolls) {
+        this.rolls = new ArrayList<>(rolls);
     }
 }
 

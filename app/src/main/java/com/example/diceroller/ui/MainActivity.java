@@ -30,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int MIN_DICE_COUNT = 1;
     private static final int MAX_DICE_COUNT = 100;
-    private int diceCount = 10;
-    private int numberOfSides = 10;
+    private static final int DEFAULT_DICE_COUNT = 10;
+    private static final int DEFAULT_NUMBER_OF_SIDES = 6;
+    private int diceCount = DEFAULT_DICE_COUNT;
+    private int numberOfSides = DEFAULT_NUMBER_OF_SIDES;
     private static final String KEY_DICE_COUNT = "key_dice_count";
     private static final String KEY_DICE_SIDES = "key_dice_sides";
     private static final String KEY_ROLLS = "key_rolls";
@@ -186,14 +188,11 @@ public class MainActivity extends AppCompatActivity {
 
         Map<Integer, Integer> increments = new HashMap<>();
         for (int oldValue : result.getOldValues()) {
-            int current =  increments.getOrDefault(oldValue, 0);
-            increments.put(oldValue, current - 1);
-
+            increments.merge(oldValue, -1, Integer::sum);
         }
 
         for (int newValue : result.getNewValues()) {
-            int current = increments.getOrDefault(newValue, 0);
-            increments.put(newValue, current + 1);
+            increments.merge(newValue, 1, Integer::sum);
         }
 
         histogramAdapter.clearSelection();
@@ -355,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Saving app state when device rotates to landscape mode
     @Override
-    protected void onSaveInstanceState (@NonNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Saving die info for logic initialization
@@ -367,17 +366,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Helper method to restore app logic in onCreate, when rotation to landscape mode happens
-    private void restoreLogic (Bundle savedInstanceState) {
+    private void restoreLogic(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
 
-            diceCount = savedInstanceState.getInt(KEY_DICE_COUNT, 10);
-            numberOfSides = savedInstanceState.getInt(KEY_DICE_SIDES, 10);
+            diceCount = savedInstanceState.getInt(KEY_DICE_COUNT, DEFAULT_DICE_COUNT);
+            numberOfSides = savedInstanceState.getInt(KEY_DICE_SIDES, DEFAULT_NUMBER_OF_SIDES);
         }
 
     }
 
     // Helper method to restore last roll results in onCreate, when rotation to landscape mode happens
-    private void restoreDiceRollerRolls (Bundle savedInstanceState) {
+    private void restoreDiceRollerRolls(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             ArrayList<Integer> savedRolls = savedInstanceState.getIntegerArrayList(KEY_ROLLS);
             if (savedRolls != null) {
@@ -385,7 +384,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
 }

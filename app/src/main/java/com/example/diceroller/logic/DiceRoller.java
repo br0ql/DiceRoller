@@ -10,9 +10,7 @@ import java.util.HashSet;
 
 public class DiceRoller {
     private final Dice dice;
-    // List type is a supertype and includes ArrayList for potential further use.
     private List<Integer> rolls;
-    // Deque object that is a list composed of integers
     private final Deque<List<Integer>> history = new ArrayDeque<>();
     // Max stack height
     private static final int MAX_HISTORY = 5;
@@ -28,34 +26,6 @@ public class DiceRoller {
         for (int i = 0; i < numberOfRolls; i++) {
             rolls.add(dice.roll());
         }
-    }
-
-    public void rerollEqual(int result) {
-        saveState();
-        for (int i = 0; i < rolls.size(); i++) {
-            if (rolls.get(i) == result) {
-                rolls.set(i, dice.roll());
-            }
-        }
-    }
-
-    public void rerollAboveOrEqual(int result) {
-        saveState();
-        for (int i = 0; i < rolls.size(); i++) {
-            if (rolls.get(i) >= result) {
-                rolls.set(i, dice.roll());
-            }
-        }
-    }
-
-    public void deleteEqual(int result) {
-        saveState();
-        rolls.removeIf(r -> (r == result));
-    }
-
-    public void deleteAboveOrEqual(int result) {
-        saveState();
-        rolls.removeIf(r -> (r >= result));
     }
 
     public RerollResult reroll(List<Integer> valuesToReroll) {
@@ -81,21 +51,6 @@ public class DiceRoller {
         return new RerollResult(oldValues, newValues);
     }
 
-    public void delete(List<Integer> valuesToDelete) {
-
-        saveState();
-
-        Set<Integer> deleteSet = new HashSet<>(valuesToDelete);
-
-        rolls.removeIf(deleteSet::contains);
-    }
-
-
-    public void clear() {
-        saveState();
-        rolls.clear();
-    }
-
     // Method that saves the current state of the rolls list.
     // It will also keep the size of stack to be < 5.
     private void saveState() {
@@ -108,12 +63,11 @@ public class DiceRoller {
         }
     }
 
-    public boolean undo() {
+    public void undo() {
         if (history.isEmpty()) {
-            return false;
+            return;
         }
         rolls = history.pop();
-        return true;
     }
 
     public boolean canUndo() {

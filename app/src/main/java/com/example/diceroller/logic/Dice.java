@@ -1,5 +1,7 @@
 package com.example.diceroller.logic;
 
+import androidx.annotation.NonNull;
+
 import java.util.Random;
 
 public class Dice {
@@ -23,6 +25,7 @@ public class Dice {
         return sides;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Number of sides = " + sides;

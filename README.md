@@ -12,7 +12,7 @@ It was developed as the final project for Harvard's CS50x – Introduction to Co
 ### 🎬 Demo
 
 <p align="center">
-  <img src="assets/gifs/gif1.gif" width="600">
+  <img src="assets/gifs/gif1.gif" width="450">
 </p>
 
 ---
